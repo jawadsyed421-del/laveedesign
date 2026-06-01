@@ -67,7 +67,7 @@ function ProductPage() {
             <div className="mt-8">
               <p className="text-[11px] tracking-luxury mb-3">Select Size</p>
               <div className="flex flex-wrap gap-2">
-                {product.sizes.map((s) => (
+                {product.sizes.map((s: string) => (
                   <button key={s} onClick={() => setSize(s)} className={`px-4 h-10 border text-xs ${size === s ? "border-foreground bg-foreground text-background" : "border-border"}`}>{s}</button>
                 ))}
               </div>
