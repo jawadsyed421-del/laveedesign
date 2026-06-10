@@ -12,9 +12,9 @@ export const Route = createFileRoute("/product/$handle")({
     const p = getProduct(params.handle);
     return {
       meta: [
-        { title: p ? `${p.title} — Lavee Design` : "Product — Lavee Design" },
-        { name: "description", content: p?.description ?? "Lavee Design couture" },
-        { property: "og:title", content: p?.title ?? "Lavee Design" },
+        { title: p ? `${p.title} — LAVEE DESIGN` : "Product — LAVEE DESIGN" },
+        { name: "description", content: p?.description ?? "LAVEE DESIGN couture" },
+        { property: "og:title", content: p?.title ?? "LAVEE DESIGN" },
         { property: "og:description", content: p?.description ?? "" },
         ...(p ? [{ property: "og:image", content: p.image }] : []),
       ],

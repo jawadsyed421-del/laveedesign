@@ -25,7 +25,7 @@ export function Header() {
           <button aria-label="Menu" className="lg:hidden"><Menu className="h-5 w-5" /></button>
           <button aria-label="Search" className="hidden lg:inline-flex"><Search className="h-[18px] w-[18px]" /></button>
         </div>
-        <Link to="/" className="text-center font-display text-3xl tracking-[0.35em]">Lavee Design</Link>
+        <Link to="/" className="text-center font-display text-3xl tracking-[0.35em]">LAVEE DESIGN</Link>
         <div className="flex items-center justify-end gap-5">
           <Link to="/" aria-label="Account"><User className="h-[18px] w-[18px]" /></Link>
           <Link to="/" aria-label="Wishlist"><Heart className="h-[18px] w-[18px]" /></Link>
