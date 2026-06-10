@@ -32,7 +32,7 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Monik Couture. All rights reserved.
+        © {new Date().getFullYear()} Lavee Design. All rights reserved.
       </div>
     </footer>
   );
