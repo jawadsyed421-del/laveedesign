@@ -7,8 +7,8 @@ import { useState } from "react";
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "Shop All — Monik" },
-      { name: "description", content: "Discover the complete Monik collection of lehengas, sarees, suits and gowns in ivory and beige." },
+      { title: "Shop All — Lavee Design" },
+      { name: "description", content: "Discover the complete Lavee Design collection of lehengas, sarees, suits and gowns in ivory and beige." },
     ],
   }),
   component: ShopPage,
