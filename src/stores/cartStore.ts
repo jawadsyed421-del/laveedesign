@@ -46,6 +46,6 @@ export const useCart = create<CartState>()(
       total: () => get().items.reduce((s, i) => s + i.product.price * i.quantity, 0),
       count: () => get().items.reduce((s, i) => s + i.quantity, 0),
     }),
-    { name: "monik-cart", partialize: (s) => ({ items: s.items }) }
+    { name: "lavee-cart", partialize: (s) => ({ items: s.items }) }
   )
 );

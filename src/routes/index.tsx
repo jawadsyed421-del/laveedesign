@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Monik — Contemporary Indian Couture" },
+      { title: "Lavee Design — Contemporary Indian Couture" },
       { name: "description", content: "Bridal, festive and pret couture in ivory, cream and natural beige. Hand-crafted in our atelier." },
-      { property: "og:title", content: "Monik — Contemporary Indian Couture" },
+      { property: "og:title", content: "Lavee Design — Contemporary Indian Couture" },
       { property: "og:description", content: "Bridal, festive and pret couture in ivory, cream and natural beige." },
     ],
   }),

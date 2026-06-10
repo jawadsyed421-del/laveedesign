@@ -12,7 +12,7 @@ export function Footer() {
     <footer className="bg-[var(--beige-100)] border-t border-border mt-24">
       <div className="mx-auto max-w-[1400px] px-6 py-16 grid gap-12 md:grid-cols-5">
         <div className="md:col-span-2">
-          <div className="font-display text-2xl tracking-[0.3em]">MONIK</div>
+          <div className="font-display text-2xl tracking-[0.3em]">Lavee Design</div>
           <p className="mt-4 text-sm text-muted-foreground max-w-xs leading-relaxed">
             A house of contemporary Indian couture, devoted to the quiet luxury of ivory, cream and natural beige.
           </p>
@@ -32,7 +32,7 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Monik Couture. All rights reserved.
+        © {new Date().getFullYear()} Lavee Design. All rights reserved.
       </div>
     </footer>
   );
