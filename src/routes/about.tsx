@@ -5,8 +5,8 @@ import veil from "@/assets/veil.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "The Atelier — Monik" },
-      { name: "description", content: "Inside the Monik atelier — a house devoted to ivory, cream and beige couture." },
+      { title: "The Atelier — Lavee Design" },
+      { name: "description", content: "Inside the Lavee Design atelier — a house devoted to ivory, cream and beige couture." },
     ],
   }),
   component: About,
