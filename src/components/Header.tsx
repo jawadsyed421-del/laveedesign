@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Search, User, Heart, ShoppingBag, Menu } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu } from "lucide-react";
 import { useCart } from "@/stores/cartStore";
+import { AuthMenu } from "./AuthMenu";
 
 const links = [
   { to: "/", label: "New In" },
@@ -27,7 +28,7 @@ export function Header() {
         </div>
         <Link to="/" className="text-center font-display text-3xl tracking-[0.35em]">LAVEE DESIGN</Link>
         <div className="flex items-center justify-end gap-5">
-          <Link to="/" aria-label="Account"><User className="h-[18px] w-[18px]" /></Link>
+          <AuthMenu />
           <Link to="/" aria-label="Wishlist"><Heart className="h-[18px] w-[18px]" /></Link>
           <button aria-label="Cart" onClick={open} className="relative">
             <ShoppingBag className="h-[18px] w-[18px]" />

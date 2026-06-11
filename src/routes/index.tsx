@@ -8,7 +8,7 @@ import catLehenga from "@/assets/cat-lehenga.jpg";
 import catCorset from "@/assets/cat-corset.jpg";
 import catSaree from "@/assets/cat-saree.jpg";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,10 +114,7 @@ function Index() {
         <div className="mx-auto max-w-xl px-6 text-center">
           <h2 className="font-display text-4xl">Join the House</h2>
           <p className="mt-3 text-sm text-muted-foreground">First access to new collections, private previews and atelier stories.</p>
-          <form className="mt-6 flex gap-0" onSubmit={(e) => e.preventDefault()}>
-            <Input type="email" placeholder="Your email address" className="rounded-none h-12 border-foreground/30 bg-background" />
-            <Button className="rounded-none h-12 px-8 tracking-luxury text-xs bg-[var(--beige-900)] hover:bg-[var(--beige-900)]/90 text-[var(--beige-50)]">Subscribe</Button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
     </SiteLayout>
