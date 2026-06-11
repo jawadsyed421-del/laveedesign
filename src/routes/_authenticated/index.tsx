@@ -10,7 +10,7 @@ import catSaree from "@/assets/cat-saree.jpg";
 import { Button } from "@/components/ui/button";
 import { NewsletterForm } from "@/components/NewsletterForm";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "LAVEE DESIGN — Contemporary Indian Couture" },
