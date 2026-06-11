@@ -7,7 +7,7 @@ import { useCart } from "@/stores/cartStore";
 import { Heart, Truck, RotateCw, Shield } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/product/$handle")({
+export const Route = createFileRoute("/_authenticated/product/$handle")({
   head: ({ params }) => {
     const p = getProduct(params.handle);
     return {
