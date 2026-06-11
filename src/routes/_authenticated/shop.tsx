@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { products } from "@/lib/products";
 import { useState } from "react";
 
-export const Route = createFileRoute("/shop")({
+export const Route = createFileRoute("/_authenticated/shop")({
   head: () => ({
     meta: [
       { title: "Shop All — LAVEE DESIGN" },
