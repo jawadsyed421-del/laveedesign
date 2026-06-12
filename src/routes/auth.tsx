@@ -15,7 +15,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -39,11 +39,18 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Welcome to LAVEE DESIGN");
         navigate({ to: "/" });
-      } else {
+      } else if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back to LAVEE DESIGN");
         navigate({ to: "/" });
+      } else {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        toast.success("Password reset link sent. Check your email.");
+        setMode("signin");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
@@ -56,8 +63,8 @@ function AuthPage() {
     <SiteLayout>
       <section className="mx-auto max-w-md px-6 py-24">
         <div className="text-center mb-10">
-          <p className="tracking-luxury text-xs text-muted-foreground mb-2">{mode === "signin" ? "Welcome Back" : "Join the House"}</p>
-          <h1 className="font-display text-4xl">{mode === "signin" ? "Sign In" : "Create Account"}</h1>
+          <p className="tracking-luxury text-xs text-muted-foreground mb-2">{mode === "signin" ? "Welcome Back" : mode === "signup" ? "Join the House" : "Reset Password"}</p>
+          <h1 className="font-display text-4xl">{mode === "signin" ? "Sign In" : mode === "signup" ? "Create Account" : "Forgot Password"}</h1>
         </div>
         <form onSubmit={submit} className="space-y-4">
           {mode === "signup" && (
@@ -76,6 +83,7 @@ function AuthPage() {
             <Label className="text-[11px] tracking-luxury">Email</Label>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="rounded-none h-11 border-foreground/30 mt-1" />
           </div>
+          {mode !== "forgot" && (
           <div>
             <Label className="text-[11px] tracking-luxury">Password</Label>
             <div className="relative mt-1">
@@ -90,15 +98,29 @@ function AuthPage() {
               </button>
             </div>
           </div>
+          )}
+          {mode === "signin" && (
+            <div className="text-right">
+              <button type="button" onClick={() => setMode("forgot")} className="text-xs underline text-muted-foreground hover:text-foreground">
+                Forgot your password?
+              </button>
+            </div>
+          )}
           <Button type="submit" disabled={loading} className="w-full rounded-none h-12 tracking-luxury text-xs bg-[var(--beige-900)] hover:bg-[var(--beige-900)]/90 text-[var(--beige-50)]">
-            {loading ? "Please wait…" : mode === "signin" ? "Sign In" : "Create Account"}
+            {loading ? "Please wait…" : mode === "signin" ? "Sign In" : mode === "signup" ? "Create Account" : "Send Reset Link"}
           </Button>
         </form>
         <p className="text-center text-xs text-muted-foreground mt-6">
-          {mode === "signin" ? "New to LAVEE DESIGN?" : "Already have an account?"}{" "}
-          <button type="button" onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="underline">
-            {mode === "signin" ? "Create one" : "Sign in"}
-          </button>
+          {mode === "forgot" ? (
+            <button type="button" onClick={() => setMode("signin")} className="underline">Back to sign in</button>
+          ) : (
+            <>
+              {mode === "signin" ? "New to LAVEE DESIGN?" : "Already have an account?"}{" "}
+              <button type="button" onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="underline">
+                {mode === "signin" ? "Create one" : "Sign in"}
+              </button>
+            </>
+          )}
         </p>
       </section>
     </SiteLayout>
