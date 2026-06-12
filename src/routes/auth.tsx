@@ -38,10 +38,12 @@ function AuthPage() {
         });
         if (error) throw error;
         toast.success("Welcome to LAVEE DESIGN");
+        navigate({ to: "/" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast.success("Welcome back");
+        toast.success("Welcome back to LAVEE DESIGN");
+        navigate({ to: "/" });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
