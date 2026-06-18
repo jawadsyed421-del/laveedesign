@@ -4,9 +4,42 @@ import { Minus, Plus, X, ShoppingBag } from "lucide-react";
 import { useCart } from "@/stores/cartStore";
 import { inr } from "@/lib/products";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { recordOrder } from "@/lib/orders.functions";
+import { useState } from "react";
 
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQty, remove, total, clear } = useCart();
+  const recordOrderFn = useServerFn(recordOrder);
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleCheckout() {
+    if (items.length === 0) return;
+    setSubmitting(true);
+    try {
+      await recordOrderFn({
+        data: {
+          total_amount: total(),
+          items: items.map((i) => ({
+            product_id: i.product.id,
+            product_title: i.product.title,
+            product_image: i.product.image,
+            size: i.size,
+            quantity: i.quantity,
+            unit_price: i.product.price,
+          })),
+        },
+      });
+      toast.success("Order placed — thank you!");
+      clear();
+      setOpen(false);
+    } catch (e: any) {
+      toast.error(e?.message || "Checkout failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
       <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
@@ -46,8 +79,8 @@ export function CartDrawer() {
                 <span className="font-display text-lg">{inr(total())}</span>
               </div>
               <p className="text-[11px] text-muted-foreground">Shipping & taxes calculated at checkout.</p>
-              <Button className="w-full rounded-none h-12 tracking-luxury text-xs bg-[var(--beige-900)] hover:bg-[var(--beige-900)]/90 text-[var(--beige-50)]" onClick={() => { toast.success("Demo checkout — connect a payment provider to enable."); clear(); setOpen(false); }}>
-                Checkout
+              <Button disabled={submitting} className="w-full rounded-none h-12 tracking-luxury text-xs bg-[var(--beige-900)] hover:bg-[var(--beige-900)]/90 text-[var(--beige-50)]" onClick={handleCheckout}>
+                {submitting ? "Placing order…" : "Checkout"}
               </Button>
             </div>
           </>
