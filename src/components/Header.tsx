@@ -17,6 +17,8 @@ const links = [
 export function Header() {
   const { count, open } = useCart();
   const c = count();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border">
       <div className="bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] sm:text-[11px] tracking-luxury py-2 px-3 text-center">
