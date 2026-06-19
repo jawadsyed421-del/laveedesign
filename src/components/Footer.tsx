@@ -4,7 +4,7 @@ import { Instagram, Facebook, Youtube } from "lucide-react";
 const cols = [
   { title: "Shop", links: ["New Arrivals", "Bridal", "Lehengas", "Sarees", "Suits", "Gowns"] },
   { title: "Atelier", links: ["Our Story", "Craftsmanship", "Press", "Stores", "Careers"] },
-  { title: "Assistance", links: ["Contact Us", "Shipping", "Returns", "Size Guide", "FAQ"] },
+  { title: "Assistance", links: ["Contact Us", "Shipping", "Returns", "Size Guide", "FAQ", "Admin"] },
 ];
 
 export function Footer() {
@@ -26,14 +26,22 @@ export function Footer() {
           <div key={c.title}>
             <h4 className="text-[11px] tracking-luxury text-foreground mb-4">{c.title}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              {c.links.map((l) => <li key={l}><Link to="/" className="hover:text-foreground">{l}</Link></li>)}
+              {c.links.map((l) => (
+                <li key={l}>
+                  <Link
+                    to={l === "Admin" ? "/admin" : "/"}
+                    className="hover:text-foreground"
+                  >
+                    {l}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         ))}
       </div>
       <div className="border-t border-border py-6 px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
         <span>© {new Date().getFullYear()} LAVEE DESIGN. All rights reserved.</span>
-        <Link to="/admin" className="hover:text-foreground transition-colors tracking-luxury uppercase text-[10px]">Admin</Link>
       </div>
     </footer>
   );

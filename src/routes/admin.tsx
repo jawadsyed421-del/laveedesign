@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -22,6 +22,7 @@ export const Route = createFileRoute("/admin")({
 
 function AdminPage() {
   const [creds, setCreds] = useState<{ username: string; password: string } | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const raw = sessionStorage.getItem(STORAGE_KEY);
@@ -31,7 +32,7 @@ function AdminPage() {
   }, []);
 
   if (!creds) return <Login onSuccess={(c) => { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(c)); setCreds(c); }} />;
-  return <Dashboard creds={creds} onLogout={() => { sessionStorage.removeItem(STORAGE_KEY); setCreds(null); }} />;
+  return <Dashboard creds={creds} onLogout={() => { sessionStorage.removeItem(STORAGE_KEY); setCreds(null); navigate({ to: "/" }); }} />;
 }
 
 function Login({ onSuccess }: { onSuccess: (c: { username: string; password: string }) => void }) {
