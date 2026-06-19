@@ -4,7 +4,7 @@ import { Instagram, Facebook, Youtube } from "lucide-react";
 const cols = [
   { title: "Shop", links: ["New Arrivals", "Bridal", "Lehengas", "Sarees", "Suits", "Gowns"] },
   { title: "Atelier", links: ["Our Story", "Craftsmanship", "Press", "Stores", "Careers"] },
-  { title: "Assistance", links: ["Contact Us", "Shipping", "Returns", "Size Guide", "FAQ"] },
+  { title: "Assistance", links: ["Contact Us", "Shipping", "Returns", "Size Guide", "FAQ", "Admin"] },
 ];
 
 export function Footer() {
