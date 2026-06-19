@@ -31,8 +31,9 @@ export function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} LAVEE DESIGN. All rights reserved.
+      <div className="border-t border-border py-6 px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+        <span>© {new Date().getFullYear()} LAVEE DESIGN. All rights reserved.</span>
+        <Link to="/admin" className="hover:text-foreground transition-colors tracking-luxury uppercase text-[10px]">Admin</Link>
       </div>
     </footer>
   );

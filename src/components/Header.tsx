@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Heart, ShoppingBag, Menu } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/stores/cartStore";
 import { AuthMenu } from "./AuthMenu";
 
