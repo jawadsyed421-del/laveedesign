@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Heart, ShoppingBag, Menu } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/stores/cartStore";
 import { AuthMenu } from "./AuthMenu";
 
@@ -16,6 +17,8 @@ const links = [
 export function Header() {
   const { count, open } = useCart();
   const c = count();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   return (
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border">
       <div className="bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] sm:text-[11px] tracking-luxury py-2 px-3 text-center">
@@ -32,7 +35,7 @@ export function Header() {
           <Link to="/" aria-label="Wishlist"><Heart className="h-[18px] w-[18px]" /></Link>
           <button aria-label="Cart" onClick={open} className="relative">
             <ShoppingBag className="h-[18px] w-[18px]" />
-            {c > 0 && <span className="absolute -top-2 -right-2 bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{c}</span>}
+            {mounted && c > 0 && <span className="absolute -top-2 -right-2 bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{c}</span>}
           </button>
         </div>
       </div>
