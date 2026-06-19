@@ -35,7 +35,7 @@ export function Header() {
           <Link to="/" aria-label="Wishlist"><Heart className="h-[18px] w-[18px]" /></Link>
           <button aria-label="Cart" onClick={open} className="relative">
             <ShoppingBag className="h-[18px] w-[18px]" />
-            {c > 0 && <span className="absolute -top-2 -right-2 bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{c}</span>}
+            {mounted && c > 0 && <span className="absolute -top-2 -right-2 bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{c}</span>}
           </button>
         </div>
       </div>
