@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_products: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          images: string[]
+          mrp: number
+          price: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[]
+          mrp?: number
+          price?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[]
+          mrp?: number
+          price?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string

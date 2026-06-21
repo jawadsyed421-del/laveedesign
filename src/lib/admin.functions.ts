@@ -82,3 +82,74 @@ export const adminGetDashboard = createServerFn({ method: "POST" })
       users,
     };
   });
+
+type NewProductInput = {
+  username: string;
+  password: string;
+  title: string;
+  description?: string;
+  category: string;
+  mrp: number;
+  price: number;
+  images: { name: string; mime: string; base64: string }[];
+};
+
+export const adminCreateProduct = createServerFn({ method: "POST" })
+  .inputValidator((d: NewProductInput) => {
+    if (!d?.title?.trim()) throw new Error("Title is required");
+    if (!d.category?.trim()) throw new Error("Category is required");
+    if (!(d.price >= 0) || !(d.mrp >= 0)) throw new Error("Invalid prices");
+    if (!Array.isArray(d.images) || d.images.length === 0)
+      throw new Error("At least one image required");
+    if (d.images.length > 8) throw new Error("Max 8 images per product");
+    return d;
+  })
+  .handler(async ({ data }) => {
+    verify(data);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const urls: string[] = [];
+    for (const img of data.images) {
+      const ext = (img.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const bytes = Uint8Array.from(atob(img.base64), (c) => c.charCodeAt(0));
+      const { error } = await supabaseAdmin.storage
+        .from("product-images")
+        .upload(path, bytes, { contentType: img.mime || "image/jpeg", upsert: false });
+      if (error) throw new Error(`Upload failed: ${error.message}`);
+      const { data: pub } = supabaseAdmin.storage.from("product-images").getPublicUrl(path);
+      urls.push(pub.publicUrl);
+    }
+    const { error: insErr } = await supabaseAdmin.from("admin_products").insert({
+      title: data.title.trim(),
+      description: data.description?.trim() || null,
+      category: data.category.trim(),
+      mrp: data.mrp,
+      price: data.price,
+      images: urls,
+    });
+    if (insErr) throw new Error(insErr.message);
+    return { ok: true };
+  });
+
+export const adminListProducts = createServerFn({ method: "POST" })
+  .inputValidator((d: { username: string; password: string }) => d)
+  .handler(async ({ data }) => {
+    verify(data);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows, error } = await supabaseAdmin
+      .from("admin_products")
+      .select("id, title, description, category, mrp, price, images, created_at")
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return { products: rows ?? [] };
+  });
+
+export const adminDeleteProduct = createServerFn({ method: "POST" })
+  .inputValidator((d: { username: string; password: string; id: string }) => d)
+  .handler(async ({ data }) => {
+    verify(data);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("admin_products").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
