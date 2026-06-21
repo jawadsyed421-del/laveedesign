@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/lib/products";
+import { products, inr } from "@/lib/products";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/hero.jpg";
 import veil from "@/assets/veil.jpg";
 import catLehenga from "@/assets/cat-lehenga.jpg";
@@ -109,6 +111,9 @@ function Index() {
         </div>
       </section>
 
+      {/* New arrivals from admin */}
+      <AdminProductsSection />
+
       {/* Newsletter */}
       <section className="bg-[var(--beige-100)] py-12 sm:py-20">
         <div className="mx-auto max-w-xl px-4 sm:px-6 text-center">
@@ -118,5 +123,88 @@ function Index() {
         </div>
       </section>
     </SiteLayout>
+  );
+}
+
+type AdminProduct = {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  mrp: number;
+  price: number;
+  images: string[];
+};
+
+function AdminProductsSection() {
+  const { data } = useQuery({
+    queryKey: ["admin-products-public"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("admin_products")
+        .select("id, title, description, category, mrp, price, images")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as AdminProduct[];
+    },
+  });
+
+  if (!data || data.length === 0) return null;
+
+  const grouped: Record<string, AdminProduct[]> = {};
+  for (const p of data) (grouped[p.category] ||= []).push(p);
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-4 sm:px-6 pb-12 sm:pb-20 space-y-12 sm:space-y-16">
+      {Object.entries(grouped).map(([cat, items]) => (
+        <div key={cat}>
+          <div className="text-center mb-6 sm:mb-10">
+            <p className="tracking-luxury text-xs text-muted-foreground mb-2">New In</p>
+            <h2 className="font-display text-2xl sm:text-4xl">{cat}</h2>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {items.map((p) => (
+              <AdminProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function AdminProductCard({ product }: { product: AdminProduct }) {
+  const hasDiscount = Number(product.mrp) > Number(product.price);
+  const off = hasDiscount ? Math.round((1 - Number(product.price) / Number(product.mrp)) * 100) : 0;
+  return (
+    <div className="group">
+      <div className="relative overflow-hidden bg-[var(--beige-100)]">
+        {product.images?.[0] ? (
+          <img
+            src={product.images[0]}
+            alt={product.title}
+            loading="lazy"
+            className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full aspect-[3/4] grid place-items-center text-xs text-muted-foreground">No image</div>
+        )}
+        {hasDiscount && (
+          <span className="absolute top-3 left-3 bg-[var(--beige-900)] text-[var(--beige-50)] text-[10px] tracking-luxury px-2 py-1">
+            {off}% OFF
+          </span>
+        )}
+      </div>
+      <div className="mt-4 text-center space-y-1">
+        <div className="text-[10px] tracking-luxury text-muted-foreground">{product.category}</div>
+        <p className="font-display text-base">{product.title}</p>
+        <div className="text-sm flex items-baseline justify-center gap-2">
+          <span className="font-medium">MRP {inr(Number(product.price))}</span>
+          {hasDiscount && (
+            <span className="text-muted-foreground line-through text-xs">{inr(Number(product.mrp))}</span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
